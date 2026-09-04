@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HopeBridge Mockup</title>
+    <style>
+      :root {
+        --page-bg: #efefee;
+        --soft-cream: #f7f5f2;
+        --panel-bg: #f6f3f0;
+        --dark-green: #102e2e;
+        --green-2: #123a39;
+        --green-3: #173f3f;
+        --text: #f0f4f5;
+        --muted: #596d6e;
+        --border: rgba(13, 35, 35, 0.10);
+        --accent: #eb6a4a;
+        --shadow: 0 18px 28px rgba(13, 29, 31, 0.14);
+      }
+
+      * { box-sizing: border-box; }
+
+      html, body {
+        margin: 0;
+        min-height: 100%;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: var(--page-bg);
+        color: var(--text);
+      }
+
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        padding: 36px;
+      }
+
+      .showcase {
+        width: min(1200px, 100%);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(280px, 1fr));
+        gap: 40px;
+        align-items: end;
+      }
+
+      .mockup {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 18px;
+      }
+
+      .device {
+        position: relative;
+        width: min(100%, 520px);
+        min-height: 585px;
+        background: #ece9e6;
+        border-radius: 22px;
+        border: 2px solid rgba(15, 28, 30, 0.14);
+        box-shadow: var(--shadow);
+        overflow: hidden;
+      }
+
+      .device::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        width: 84%;
+        height: 24px;
+        transform: translateX(-50%);
+        background: rgba(18, 26, 28, 0.03);
+        border-radius: 0 0 18px 18px;
+      }
+
+      .browser-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 10px 14px 9px;
+        background: rgba(255, 255, 255, 0.2);
+        border-bottom: 1px solid rgba(22, 35, 35, 0.08);
+      }
+
+      .browser-left {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(11, 35, 34, 0.18);
+      }
+
+      .browser-url {
+        width: 100%;
+        max-width: 230px;
+        height: 20px;
+        border-radius: 14px;
+        background: rgba(15, 35, 36, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px;
+        color: rgba(19, 34, 37, 0.9);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+
+      .browser-right {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .tiny-button {
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        background: rgba(18, 40, 40, 0.06);
+      }
+
+      .site {
+        margin: 0;
+        padding: 0;
+      }
+
+      .page-inner {
+        background: #f8f5f1;
+        min-height: 552px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: 56px;
+        padding: 0 18px 0 14px;
+        background: #f6f2ee;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        font-size: 0.92rem;
+        color: #1b2629;
+      }
+
+      .brand-mark {
+        width: 17px;
+        height: 17px;
+        display: grid;
+        place-items: center;
+        background: var(--accent);
+        border-radius: 50%;
+        color: white;
+        font-size: 10px;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 9px;
+        color: rgba(24, 40, 42, 0.72);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .nav-links span {
+        opacity: 0.75;
+      }
+
+      .header-button {
+        border: 1px solid rgba(18, 38, 40, 0.18);
+        background: rgba(21, 42, 43, 0.04);
+        color: #1b2f30;
+        border-radius: 4px;
+        padding: 5px 8px;
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .protected .page-inner {
+        background: #f5f3f1;
+      }
+
+      .protected-main {
+        position: relative;
+        flex: 1;
+        display: grid;
+        place-items: center;
+        padding: 26px 18px 18px;
+      }
+
+      .protected-title {
+        position: absolute;
+        top: 20px;
+        left: 28px;
+        font-size: clamp(18px, 2vw, 28px);
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        color: #1b2c2c;
+      }
+
+      .password-card {
+        width: min(90%, 220px);
+        margin-top: 54px;
+        background: #f7f4f0;
+        border: 1px solid rgba(24, 41, 42, 0.08);
+        border-radius: 8px;
+        box-shadow: 0 10px 18px rgba(18, 30, 31, 0.04);
+        padding: 18px 16px 14px;
+        text-align: center;
+      }
+
+      .lock-wrap {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        background: #f0b34f;
+        margin: 0 auto 12px;
+        display: grid;
+        place-items: center;
+        color: #fff;
+        font-size: 18px;
+        box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+      }
+
+      .lock-wrap::before {
+        content: "🔒";
+        display: block;
+        transform: translateY(-1px);
+      }
+
+      .password-label {
+        font-size: 15px;
+        font-weight: 700;
+        color: #1d2f30;
+        margin-bottom: 8px;
+      }
+
+      .password-input {
+        width: 100%;
+        border: 1px solid rgba(15, 36, 38, 0.12);
+        border-radius: 4px;
+        background: #fff;
+        font-size: 11px;
+        padding: 9px 10px;
+        margin-top: 12px;
+        outline: none;
+      }
+
+      .submit-btn {
+        width: 100%;
+        margin-top: 12px;
+        border: none;
+        border-radius: 4px;
+        background: var(--accent);
+        color: #fff;
+        padding: 10px 12px;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        font-weight: 700;
+      }
+
+      .dark-footer {
+        background: linear-gradient(180deg, var(--green-2), var(--dark-green));
+        color: rgba(255,255,255,0.9);
+        padding: 16px 16px 10px;
+      }
+
+      .footer-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .footer-brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        color: #fff;
+        font-size: 12px;
+      }
+
+      .footer-brand .brand-mark {
+        width: 16px;
+        height: 16px;
+        font-size: 9px;
+      }
+
+      .footer-cta {
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.14);
+        border-radius: 4px;
+        padding: 6px 8px;
+        font-size: 8px;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px 10px;
+        font-size: 8px;
+        color: rgba(255,255,255,0.75);
+      }
+
+      .footer-grid div {
+        padding: 3px 0;
+      }
+
+      .footer-grid strong {
+        display: block;
+        font-size: 8px;
+        color: rgba(255,255,255,0.95);
+        margin-bottom: 4px;
+      }
+
+      .footer-copy {
+        margin-top: 12px;
+        padding-top: 12px;
+        border-top: 1px solid rgba(255,255,255,0.12);
+        font-size: 7px;
+        text-align: center;
+        color: rgba(255,255,255,0.7);
+      }
+
+      .not-found .page-inner {
+        background: #f3f1ef;
+      }
+
+      .not-found-hero {
+        position: relative;
+        flex: 1;
+        background: linear-gradient(180deg, #f6f3f0 0%, #f1eee9 100%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 22px 20px 28px;
+        text-align: center;
+      }
+
+      .big-404 {
+        position: relative;
+        font-weight: 800;
+        font-size: clamp(104px, 13vw, 220px);
+        letter-spacing: -0.08em;
+        line-height: 0.75;
+        color: rgba(16, 31, 31, 0.12);
+        z-index: 0;
+      }
+
+      .not-found-copy {
+        position: relative;
+        margin-top: -28px;
+        z-index: 1;
+      }
+
+      .not-found-copy h2 {
+        margin: 0;
+        font-size: clamp(24px, 3vw, 38px);
+        letter-spacing: -0.05em;
+        line-height: 1.1;
+        color: #1b2e2f;
+      }
+
+      .not-found-copy p {
+        margin: 8px auto 0;
+        max-width: 260px;
+        font-size: 11px;
+        line-height: 1.6;
+        color: rgba(19, 38, 38, 0.68);
+      }
+
+      .not-found .submit-btn {
+        width: auto;
+        margin-top: 18px;
+        padding: 9px 18px;
+      }
+
+      .label {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(19, 38, 38, 0.5);
+      }
+
+      .device-title {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: -0.04em;
+        color: #1a2a2c;
+        margin-top: 2px;
+      }
+
+      @media (max-width: 900px) {
+        .showcase {
+          grid-template-columns: 1fr;
+          gap: 26px;
+        }
+
+        body {
+          padding: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="showcase">
+      <section class="mockup protected">
+        <div class="device">
+          <div class="browser-bar">
+            <div class="browser-left">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <div class="browser-url">HopeBridge</div>
+            <div class="browser-right">
+              <span class="tiny-button"></span>
+              <span class="tiny-button"></span>
+            </div>
+          </div>
+
+          <div class="page-inner">
+            <div class="nav">
+              <div class="brand"><span class="brand-mark">H</span> HopeBridge</div>
+              <div class="nav-links">
+                <span>Home</span>
+                <span>Pages</span>
+                <span>Donate</span>
+                <span>About</span>
+              </div>
+              <button class="header-button">Donate</button>
+            </div>
+
+            <div class="protected-main">
+              <div class="protected-title">Password Protected</div>
+
+              <div class="password-card">
+                <div class="lock-wrap" aria-hidden="true"></div>
+                <div class="password-label">Password Protected</div>
+                <input class="password-input" type="password" placeholder="Enter password" />
+                <button class="submit-btn">Enter</button>
+              </div>
+            </div>
+
+            <footer class="dark-footer">
+              <div class="footer-top">
+                <div class="footer-brand"><span class="brand-mark">H</span> HopeBridge</div>
+                <div class="footer-cta">Subscribe to our newsletter</div>
+              </div>
+
+              <div class="footer-grid">
+                <div><strong>Contact us</strong> 8 S. Green, St.</div>
+                <div><strong>Pages</strong> Home<br />Cause<br />Blog</div>
+                <div><strong>Latest</strong> Events<br />Volunteers</div>
+                <div><strong>Social</strong> Facebook<br />Twitter</div>
+              </div>
+
+              <div class="footer-copy">Copyright HopeBridge © 2025. All rights reserved.</div>
+            </footer>
+          </div>
+        </div>
+        <div class="device-title">Protected Page</div>
+      </section>
+
+      <section class="mockup not-found">
+        <div class="device">
+          <div class="browser-bar">
+            <div class="browser-left">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+            </div>
+            <div class="browser-url">HopeBridge</div>
+            <div class="browser-right">
+              <span class="tiny-button"></span>
+              <span class="tiny-button"></span>
+            </div>
+          </div>
+
+          <div class="page-inner">
+            <div class="nav">
+              <div class="brand"><span class="brand-mark">H</span> HopeBridge</div>
+              <div class="nav-links">
+                <span>Home</span>
+                <span>Pages</span>
+                <span>Donate</span>
+                <span>About</span>
+              </div>
+              <button class="header-button">Donate</button>
+            </div>
+
+            <main class="not-found-hero">
+              <div class="big-404">404</div>
+              <div class="not-found-copy">
+                <h2>Oops! Page Not Found</h2>
+                <p>
+                  The page you're looking for may have moved, been removed, or never existed.
+                </p>
+                <button class="submit-btn">Back to Home</button>
+              </div>
+            </main>
+
+            <footer class="dark-footer">
+              <div class="footer-top">
+                <div class="footer-brand"><span class="brand-mark">H</span> HopeBridge</div>
+                <div class="footer-cta">Subscribe to our newsletter</div>
+              </div>
+
+              <div class="footer-grid">
+                <div><strong>Contact us</strong> 8 S. Green, St.</div>
+                <div><strong>Pages</strong> Home<br />Cause<br />Blog</div>
+                <div><strong>Latest</strong> Events<br />Volunteers</div>
+                <div><strong>Social</strong> Facebook<br />Twitter</div>
+              </div>
+
+              <div class="footer-copy">Copyright HopeBridge © 2025. All rights reserved.</div>
+            </footer>
+          </div>
+        </div>
+        <div class="device-title">Not Found</div>
+      </section>
+    </main>
+  </body>
+</html>
