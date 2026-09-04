@@ -1,6 +1,21 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
-import { Heart, Leaf, Users } from 'lucide-react';
+import { BrowserRouter, Link, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  ArrowRight,
+  CalendarDays,
+  CheckCircle2,
+  ChevronRight,
+  Clock3,
+  HandCoins,
+  Heart,
+  Leaf,
+  Mail,
+  MapPin,
+  Phone,
+  Quote,
+  ShieldCheck,
+  Users,
+} from 'lucide-react';
 import { API_BASE_URL } from './config';
 import { SiteFooter } from './components/SiteFooter';
 import { SiteHeader } from './components/SiteHeader';

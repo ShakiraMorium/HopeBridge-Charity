@@ -1353,6 +1353,7 @@ textarea {
 .contact-form button,
 .donation-form button {
   margin-top: 10px;
+  justify-self: end;
 }
 
 .auth-page,
@@ -1430,6 +1431,7 @@ textarea {
   display: flex;
   gap: 12px;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .profile-header {
@@ -1648,6 +1650,24 @@ textarea {
   .auth-actions,
   .cta-panel {
     justify-content: center;
+  }
+
+  .contact-form button,
+  .donation-form button,
+  .auth-form > button,
+  .auth-actions > button,
+  .auth-actions > a {
+    justify-self: center;
+  }
+
+  .newsletter-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .newsletter-row .action-button,
+  .newsletter-row button {
+    width: 100%;
   }
 
   .cta-panel {
