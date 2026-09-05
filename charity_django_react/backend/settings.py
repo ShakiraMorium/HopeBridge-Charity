@@ -20,17 +20,29 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-5#kmnwj5p%a^k8))!ba3)38z!**zg5j8yc=d6c)3f+o*7#5v=b')
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
+DEBUG = os.environ.get(
+    'DEBUG',
+    'False' if (
+        os.environ.get('RENDER', '').lower() in {'1', 'true', 'yes'}
+        or os.environ.get('VERCEL', '').lower() in {'1', 'true', 'yes'}
+        or os.environ.get('VERCEL_URL')
+    ) else 'True',
+).lower() == 'true'
 
 render_mode = os.environ.get('RENDER', '').lower() == 'true'
+vercel_mode = os.environ.get('VERCEL', '').lower() == 'true' or bool(os.environ.get('VERCEL_URL'))
 
 default_hosts = 'localhost,127.0.0.1,0.0.0.0'
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', default_hosts).split(',') if host.strip()]
 if render_mode:
     ALLOWED_HOSTS.extend(['.onrender.com'])
     ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
+if vercel_mode:
+    vercel_host = os.environ.get('VERCEL_URL', 'hope-bridge-charity-62cl.vercel.app')
+    ALLOWED_HOSTS.extend([vercel_host, '.vercel.app'])
+    ALLOWED_HOSTS = list(dict.fromkeys(ALLOWED_HOSTS))
 
-if render_mode:
+if render_mode or vercel_mode:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -41,14 +53,18 @@ CORS_ALLOWED_ORIGINS = [origin.strip() for origin in os.environ.get('CORS_ALLOWE
 CORS_ALLOW_ALL_ORIGINS = not CORS_ALLOWED_ORIGINS or os.environ.get('CORS_ALLOW_ALL_ORIGINS', 'False').lower() == 'true'
 CORS_ALLOW_CREDENTIALS = True
 
+cors_origin_regexes = []
 if render_mode:
-    CORS_ALLOWED_ORIGIN_REGEXES = [r'https://.*\.onrender\.com$']
-else:
-    CORS_ALLOWED_ORIGIN_REGEXES = []
+    cors_origin_regexes.append(r'https://.*\.onrender\.com$')
+if vercel_mode:
+    cors_origin_regexes.append(r'https://.*\.vercel\.app$')
+CORS_ALLOWED_ORIGIN_REGEXES = cors_origin_regexes
 
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in os.environ.get('CSRF_TRUSTED_ORIGINS', '').split(',') if origin.strip()]
 if render_mode:
     CSRF_TRUSTED_ORIGINS.extend(['https://*.onrender.com'])
+if vercel_mode:
+    CSRF_TRUSTED_ORIGINS.extend(['https://*.vercel.app'])
 
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'noreply@hopebridge.org')
