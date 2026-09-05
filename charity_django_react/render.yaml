@@ -16,6 +16,8 @@ services:
         value: "hopebridge-backend.onrender.com,localhost,127.0.0.1"
       - key: CORS_ALLOWED_ORIGINS
         value: "https://hopebridge-frontend.onrender.com,http://localhost:5173,http://127.0.0.1:5173"
+      - key: FRONTEND_URL
+        value: "https://hopebridge-frontend.onrender.com"
       - key: DATABASE_URL
         fromDatabase:
           name: hopebridge-db
@@ -48,6 +50,10 @@ services:
     envVars:
       - key: VITE_API_URL
         value: "https://hopebridge-backend.onrender.com"
+      - key: VITE_SIGNUP_LOTTIE_URL
+        sync: false
+      - key: VITE_LOGIN_LOTTIE_URL
+        sync: false
 
 databases:
   - name: hopebridge-db

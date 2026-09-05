@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { API_BASE_URL } from '../config';
 
 export function LoginPage({ setAuthUser }) {
   const navigate = useNavigate();
+  const loginAnimationUrl = import.meta.env.VITE_LOGIN_LOTTIE_URL || import.meta.env.VITE_SIGNUP_LOTTIE_URL;
   const [form, setForm] = useState({ email: '', password: '' });
   const [status, setStatus] = useState({ type: '', message: '' });
 
@@ -37,6 +39,11 @@ export function LoginPage({ setAuthUser }) {
     <div className="container section-block auth-page">
       <div className="auth-shell">
         <div className="auth-card">
+          {loginAnimationUrl && (
+            <div className="signup-animation" aria-hidden="true">
+              <DotLottieReact src={loginAnimationUrl} loop autoplay />
+            </div>
+          )}
           <span className="eyebrow accent">Welcome back</span>
           <h1>Log in to your account</h1>
           <form className="auth-form" onSubmit={handleSubmit}>
@@ -53,6 +60,9 @@ export function LoginPage({ setAuthUser }) {
 
           <p className="auth-switch">
             Need an account? <Link to="/signup">Sign up</Link>
+          </p>
+          <p className="auth-switch">
+            <Link to="/forgot-password">Forgot your password?</Link>
           </p>
 
           {status.message && (

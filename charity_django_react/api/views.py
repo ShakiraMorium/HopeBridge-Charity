@@ -6,6 +6,9 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.core.mail import send_mail
 from django.http import JsonResponse
+from django.utils.encoding import force_bytes, force_str
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
 from django.views.decorators.csrf import csrf_exempt
 
 from .models import ContactMessage, Donation, UserProfile
@@ -274,6 +277,63 @@ def login_user(request):
 
     login(request, authenticated)
     return JsonResponse({'success': True, 'message': 'Login successful.', 'user': _serialize_user(request, authenticated)})
+
+
+@csrf_exempt
+def forgot_password(request):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)
+
+    payload = _read_json(request)
+    email = (payload.get('email') or '').strip()
+    if not email:
+        return JsonResponse({'success': False, 'message': 'Please enter your email address.'}, status=400)
+
+    user = User.objects.filter(email__iexact=email, is_active=True).first()
+    if user:
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = default_token_generator.make_token(user)
+        from django.conf import settings
+        frontend_url = getattr(settings, 'FRONTEND_URL', 'http://127.0.0.1:5173')
+        reset_url = f'{frontend_url.rstrip("/")}/reset-password/{uid}/{token}'
+        _send_email(
+            subject='Reset your HopeBridge password',
+            body=(
+                f'Hello {user.first_name or user.username},\n\n'
+                f'Use this link to reset your HopeBridge password:\n{reset_url}\n\n'
+                'This link expires when your password changes. If you did not request this, you can ignore this email.'
+            ),
+            recipient_list=[user.email],
+        )
+
+    return JsonResponse({'success': True, 'message': 'If an account exists for that email, a reset link has been sent.'})
+
+
+@csrf_exempt
+def reset_password(request, uidb64, token):
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'message': 'Only POST requests are allowed.'}, status=405)
+
+    payload = _read_json(request)
+    password = (payload.get('password') or '').strip()
+    confirm_password = (payload.get('confirm_password') or '').strip()
+    if len(password) < 8:
+        return JsonResponse({'success': False, 'message': 'Password must be at least 8 characters.'}, status=400)
+    if password != confirm_password:
+        return JsonResponse({'success': False, 'message': 'Passwords do not match.'}, status=400)
+
+    try:
+        user_id = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=user_id, is_active=True)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if not user or not default_token_generator.check_token(user, token):
+        return JsonResponse({'success': False, 'message': 'This password reset link is invalid or expired.'}, status=400)
+
+    user.set_password(password)
+    user.save(update_fields=['password'])
+    return JsonResponse({'success': True, 'message': 'Your password has been reset. You can now log in.'})
 
 
 @csrf_exempt

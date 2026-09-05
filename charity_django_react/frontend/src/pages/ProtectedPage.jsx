@@ -16,18 +16,14 @@ export function ProtectedPage() {
           </nav>
         </header>
 
-        <div className="protected-banner">Password Protected</div>
+        <div className="protected-banner">Supporter Area</div>
 
         <div className="protected-card-wrap">
           <div className="protected-card">
-            <div className="protected-lock">🔒</div>
-            <h3>Password Protected</h3>
-            <p>This page is secured for approved supporters and partners.</p>
-            <label>
-              Password
-              <input type="password" placeholder="Enter password" />
-            </label>
-            <button type="button" className="primary-btn">Unlock Page</button>
+            <div className="protected-lock">✓</div>
+            <h3>You are signed in</h3>
+            <p>This private supporter area is available only to authenticated HopeBridge members.</p>
+            <Link to="/profile" className="primary-btn">Open my profile</Link>
           </div>
         </div>
       </div>

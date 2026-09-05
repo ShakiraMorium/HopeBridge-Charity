@@ -26,12 +26,14 @@ import { CauseDetailPage as CauseDetailPageView } from './pages/CauseDetailPage'
 import { CausesPage as CausesPageView } from './pages/CausesPage';
 import { ContactPage as ContactPageView } from './pages/ContactPage';
 import { EventsPage as EventsPageView } from './pages/EventsPage';
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage';
 import { HomePage as HomePageView } from './pages/HomePage';
 import { LoginPage as LoginPageView } from './pages/LoginPage';
 import { NotFoundPage as NotFoundPageView } from './pages/NotFoundPage';
 import { ProfilePage as ProfilePageView } from './pages/ProfilePage';
 import { ProtectedPage as ProtectedPageView } from './pages/ProtectedPage';
 import { ReceiptPage as ReceiptPageView } from './pages/ReceiptPage';
+import { ResetPasswordPage } from './pages/ResetPasswordPage';
 import { SignupPage as SignupPageView } from './pages/SignupPage';
 
 const fallbackData = {
@@ -904,6 +906,8 @@ function WebsiteLayout({ data, authUser, setAuthUser }) {
         <Routes>
           <Route path="/signup" element={<PublicOnlyRoute user={authUser}><SignupPageView setAuthUser={setAuthUser} /></PublicOnlyRoute>} />
           <Route path="/login" element={<PublicOnlyRoute user={authUser}><LoginPageView setAuthUser={setAuthUser} /></PublicOnlyRoute>} />
+          <Route path="/forgot-password" element={<PublicOnlyRoute user={authUser}><ForgotPasswordPage /></PublicOnlyRoute>} />
+          <Route path="/reset-password/:uid/:token" element={<PublicOnlyRoute user={authUser}><ResetPasswordPage /></PublicOnlyRoute>} />
           <Route path="/profile" element={<RequireAuth user={authUser}><ProfilePageView authUser={authUser} setAuthUser={setAuthUser} /></RequireAuth>} />
           <Route path="/" element={<HomePageView data={data} />} />
           <Route path="/causes" element={<RequireAuth user={authUser}><CausesPageView data={data} /></RequireAuth>} />

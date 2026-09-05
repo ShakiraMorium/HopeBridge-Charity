@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 import { API_BASE_URL } from '../config';
 
 export function SignupPage({ setAuthUser }) {
   const navigate = useNavigate();
+  const signupAnimationUrl = import.meta.env.VITE_SIGNUP_LOTTIE_URL;
   const [form, setForm] = useState({
     first_name: '',
     last_name: '',
@@ -47,6 +49,11 @@ export function SignupPage({ setAuthUser }) {
     <div className="container section-block auth-page">
       <div className="auth-shell">
         <div className="auth-card">
+          {signupAnimationUrl && (
+            <div className="signup-animation" aria-hidden="true">
+              <DotLottieReact src={signupAnimationUrl} loop autoplay />
+            </div>
+          )}
           <span className="eyebrow accent">Create account</span>
           <h1>Sign up to continue</h1>
           <p>Join HopeBridge and start supporting communities with your time and generosity.</p>
