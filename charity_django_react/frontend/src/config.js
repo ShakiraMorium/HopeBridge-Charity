@@ -8,7 +8,7 @@ const getApiBaseUrl = () => {
     return 'http://127.0.0.1:8000';
   }
 
-  return `http://${hostname}:8000`;
+  return 'https://hopebridge-backend.onrender.com';
 };
 
 export const API_BASE_URL = getApiBaseUrl();
